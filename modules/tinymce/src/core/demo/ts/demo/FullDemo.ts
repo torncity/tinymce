@@ -32,6 +32,7 @@ export default () => {
   const settings: RawEditorSettings = {
     skin_url: '../../../../js/tinymce/skins/ui/oxide',
     content_css: '../../../../js/tinymce/skins/content/default/content.css',
+    content_style: 'td.bingo { background-color: red !important; } td.dingo { background-color: green !important; }',
     images_upload_url: 'd',
     selector: 'textarea',
     // rtl_ui: true,
@@ -113,8 +114,13 @@ export default () => {
     // rtl_ui: true,
     add_unload_trigger: false,
     autosave_ask_before_unload: false,
-    toolbar: 'undo redo sidebar1 | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | align lineheight fontsizeselect fontselect formatselect styleselect insertfile | styleselect | ' +
-    'bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons table codesample code | ltr rtl',
+    toolbar: 'tableclass tablecellclass tablecellvalign tablecellborderwidth tablecellborderstyle tablecaption',
+    // table_class_list: [ 'Bongo' ],
+    table_class_list: [{ title: 'Bingo', value: 'bingo' }, { title: 'Dingo', value: 'dingo' }],
+    table_cell_class_list: [{ title: 'Bingo', value: 'bingo' }, { title: 'Dingo', value: 'dingo' }],
+    menu: {
+      table: { title: 'Table', items: 'tableclass tablecellclasss tablecellvalign tablecellborderwidth tablecellborderstyle tablecaption' }
+    },
     contextmenu: 'link linkchecker image imagetools table lists spellchecker configurepermanentpen',
 
     // Multiple toolbar array

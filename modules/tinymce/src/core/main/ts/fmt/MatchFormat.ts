@@ -47,7 +47,7 @@ const matchParents = (editor: Editor, node: Node, name: string, vars: FormatVars
   });
 
   // Do an exact check on the similar format element
-  return matchNode(editor, node, name, vars);
+  return !!matchNode(editor, node, name, vars);
 };
 
 const matchName = (dom: DOMUtils, node: Node, format) => {

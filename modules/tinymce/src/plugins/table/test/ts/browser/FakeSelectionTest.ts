@@ -1,10 +1,10 @@
 import { Assertions } from '@ephox/agar';
 import { describe, it } from '@ephox/bedrock-client';
+import { Arr } from '@ephox/katamari';
 import { TinyHooks } from '@ephox/mcagar';
 import { assert } from 'chai';
 
 import Editor from 'tinymce/core/api/Editor';
-import Tools from 'tinymce/core/api/util/Tools';
 import Plugin from 'tinymce/plugins/table/Plugin';
 import Theme from 'tinymce/themes/silver/Theme';
 
@@ -18,8 +18,14 @@ describe('browser.tinymce.plugins.table.GridSelectionTest', () => {
     base_url: '/project/tinymce/js/tinymce'
   }, [ Plugin, Theme ]);
 
+  const simpleTable =
+  '<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>';
+
+  const simpleColgroupTable =
+  '<table><colgroup><col /><col /></colgroup><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>';
+
   const assertTableSelection = (editor: Editor, tableHtml: string, selectCells: string[], cellContents: string[]) => {
-    const selectRangeXY = (table: HTMLTableElement, startTd: HTMLTableCellElement, endTd: HTMLTableCellElement) => {
+    const selectRangeXY = (_table: HTMLTableElement, startTd: HTMLTableCellElement, endTd: HTMLTableCellElement) => {
       editor.fire('mousedown', { target: startTd, button: 0 } as unknown as MouseEvent);
       editor.fire('mouseover', { target: endTd, button: 0 } as unknown as MouseEvent);
       editor.fire('mouseup', { target: endTd, button: 0 } as unknown as MouseEvent);
@@ -35,19 +41,13 @@ describe('browser.tinymce.plugins.table.GridSelectionTest', () => {
     const table = editor.$<HTMLTableElement>('table')[0];
     const cells = getCells(table);
 
-    const startTd = Tools.grep(cells, (elm) => {
-      return elm.innerHTML === selectCells[0];
-    })[0];
+    const startTd = Arr.find(cells, (elm) => elm.innerHTML === selectCells[0]).getOrDie('Could not find start TD');
 
-    const endTd = Tools.grep(cells, (elm) => {
-      return elm.innerHTML === selectCells[1];
-    })[0];
+    const endTd = Arr.find(cells, (elm) => elm.innerHTML === selectCells[1]).getOrDie('Could not find end TD');
 
     selectRangeXY(table, startTd, endTd);
 
-    const selection = Tools.map(getSelectedCells(table), (elm) => {
-      return elm.innerHTML;
-    });
+    const selection = Arr.map(getSelectedCells(table), (elm) => elm.innerHTML);
 
     assert.deepEqual(selection, cellContents);
   };
@@ -58,21 +58,42 @@ describe('browser.tinymce.plugins.table.GridSelectionTest', () => {
 
   it('TBA: select row', () => assertTableSelection(
     hook.editor(),
-    '<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>',
+    simpleTable,
+    [ '1', '2' ],
+    [ '1', '2' ]
+  ));
+
+  it('TBA: select row - colgroup', () => assertTableSelection(
+    hook.editor(),
+    simpleColgroupTable,
     [ '1', '2' ],
     [ '1', '2' ]
   ));
 
   it('TBA: select column', () => assertTableSelection(
     hook.editor(),
-    '<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>',
+    simpleTable,
+    [ '1', '3' ],
+    [ '1', '3' ]
+  ));
+
+  it('TBA: select column - colgroup', () => assertTableSelection(
+    hook.editor(),
+    simpleColgroupTable,
     [ '1', '3' ],
     [ '1', '3' ]
   ));
 
   it('TBA: select whole table', () => assertTableSelection(
     hook.editor(),
-    '<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>',
+    simpleTable,
+    [ '1', '4' ],
+    [ '1', '2', '3', '4' ]
+  ));
+
+  it('TBA: select whole table - colgroup', () => assertTableSelection(
+    hook.editor(),
+    simpleColgroupTable,
     [ '1', '4' ],
     [ '1', '2', '3', '4' ]
   ));

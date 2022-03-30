@@ -46,7 +46,7 @@ var toolbarItems = [
   'underline',
   'strikethrough',
   '|',
-  'fontsizeselect',
+  'fontsize',
   'forecolor',
   '|',
   'blockquote',
@@ -63,7 +63,7 @@ var toolbarItems = [
   '|',
   'code',
 ].join(' ');
-var inlineFormattingItems = 'bold italic underline strikethrough | fontsizeselect forecolor | blockquote';
+var inlineFormattingItems = 'bold italic underline strikethrough | fontsize forecolor | blockquote';
 var blockFormattingItems = 'align bullist';
 function initializeTinyMCE (options) {
   var _a;
@@ -104,7 +104,7 @@ function initializeTinyMCE (options) {
       setup: function (editor) {
           if (options === null || options === void 0 ? void 0 : options.actionButton) {
               editor.ui.registry.addButton('actionButton', {
-                  text: "<span class=\"torn-btn\">" + options.actionButton.title + "</span>",
+                  text:  options.actionButton.title,
                   onAction: options.actionButton.action,
               });
           }

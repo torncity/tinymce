@@ -1,4 +1,4 @@
-import { RawEditorSettings, TinyMCE } from 'tinymce/core/api/PublicApi';
+import { RawEditorOptions, TinyMCE } from "tinymce/core/api/PublicApi";
 declare let tinymce: TinyMCE;
 
 const addSvgDefToDocument = () => {
@@ -26,76 +26,76 @@ const addSvgDefToDocument = () => {
         </linearGradient>
       </defs>
     </svg>`;
-  const svgDefsWrapper = document.createElement('div');
+  const svgDefsWrapper = document.createElement("div");
   svgDefsWrapper.innerHTML = gradient;
 
   document.body.append(svgDefsWrapper);
 };
 
 const color_map = [
-  '#D6336C',
-  'Pink',
-  '#F03E3E',
-  'Red',
-  '#F76707',
-  'Orange',
-  '#F59F00',
-  'Yellow',
-  '#AE3EC9',
-  'Grape',
-  '#7048E8',
-  'Violet',
-  '#4263EB',
-  'Indigo',
-  '#1C7CD6',
-  'Blue',
-  '#1098AD',
-  'Cyan',
-  '#0CA678',
-  'Teal',
-  '#37B24D',
-  'Green',
-  '#74B816',
-  'Lime',
-  '#333333',
-  'Black',
-  '#666666',
-  'Gray',
-  '#999999',
-  'Light Gray',
-  '#CCCCCC',
-  'Silver',
+  "#D6336C",
+  "Pink",
+  "#F03E3E",
+  "Red",
+  "#F76707",
+  "Orange",
+  "#F59F00",
+  "Yellow",
+  "#AE3EC9",
+  "Grape",
+  "#7048E8",
+  "Violet",
+  "#4263EB",
+  "Indigo",
+  "#1C7CD6",
+  "Blue",
+  "#1098AD",
+  "Cyan",
+  "#0CA678",
+  "Teal",
+  "#37B24D",
+  "Green",
+  "#74B816",
+  "Lime",
+  "#333333",
+  "Black",
+  "#666666",
+  "Gray",
+  "#999999",
+  "Light Gray",
+  "#CCCCCC",
+  "Silver",
 ];
 
 const toolbarItems = [
-  'actionButton',
-  'reset',
-  'bold',
-  'italic',
-  'underline',
-  'strikethrough',
-  '|',
-  'fontsizeselect',
-  'forecolor',
-  '|',
-  'blockquote',
-  '|',
-  'bullist',
-  '|',
-  'align',
-  '|',
-  'image',
-  'link',
-  'emoticons',
-  '|',
-  'removeformat',
-  '|',
-  'code',
-].join(' ');
+  "actionButton",
+  "reset",
+  "bold",
+  "italic",
+  "underline",
+  "strikethrough",
+  "|",
+  "fontsize",
+  "forecolor",
+  "|",
+  "blockquote",
+  "|",
+  "bullist",
+  "|",
+  "align",
+  "|",
+  "image",
+  "link",
+  "emoticons",
+  "|",
+  "removeformat",
+  "|",
+  "code",
+].join(" ");
 
 const inlineFormattingItems =
-  'bold italic underline strikethrough | fontsizeselect forecolor | blockquote';
-const blockFormattingItems = 'align bullist';
+  "bold italic underline strikethrough | fontsize forecolor | blockquote";
+const blockFormattingItems = "align bullist";
 
 interface EditorInitParams {
   height: number;
@@ -107,17 +107,17 @@ interface EditorInitParams {
 }
 
 export const initializeTinyMCE = (options: EditorInitParams) => {
-  const settings: RawEditorSettings = {
-    selector: options?.selector ?? 'textarea.tiny-area',
-    plugins: 'link image code emoticons lists',
-    toolbar_location: 'bottom',
+  const settings: RawEditorOptions = {
+    selector: options?.selector ?? "textarea.tiny-area",
+    plugins: "link image code emoticons lists",
+    toolbar_location: "bottom",
     toolbar: toolbarItems,
-    toolbar_mode: 'floating',
-    fontsize_formats: [ 10, 12, 16, 18, 24, 32, 48 ]
+    toolbar_mode: "floating",
+    fontsize_formats: [10, 12, 16, 18, 24, 32, 48]
       .map((size) => `${size}=${size}pt`)
-      .join(' '),
-    skin: 'torn',
-    icons: 'torn',
+      .join(" "),
+    skin: "torn",
+    icons: "torn",
     toolbar_sticky: true,
     height: options?.height ?? 400,
     menubar: false,
@@ -126,33 +126,33 @@ export const initializeTinyMCE = (options: EditorInitParams) => {
     color_cols: 8,
     custom_colors: false,
     mobile: {
-      toolbar_mode: 'floating',
-      toolbar: 'reset inlineFormatting blockFormatting',
+      toolbar_mode: "floating",
+      toolbar: "reset inlineFormatting blockFormatting",
       toolbar_groups: {
         inlineFormatting: {
-          icon: 'format',
-          tooltip: 'Formatting',
+          icon: "format",
+          tooltip: "Formatting",
           items: inlineFormattingItems,
         },
         blockFormatting: {
-          icon: 'align-left',
-          tooltip: 'Block Formatting',
+          icon: "align-left",
+          tooltip: "Block Formatting",
           items: blockFormattingItems,
         },
       },
     },
     setup: (editor) => {
       if (options?.actionButton) {
-        editor.ui.registry.addButton('actionButton', {
-          text: `<span class="torn-btn">${options.actionButton.title}</span>`,
+        editor.ui.registry.addButton("actionButton", {
+          text: options.actionButton.title,
           onAction: options.actionButton.action,
         });
       }
 
-      editor.ui.registry.addButton('reset', {
-        icon: 'reset',
+      editor.ui.registry.addButton("reset", {
+        icon: "reset",
         onAction: () => {
-          editor.setContent('');
+          editor.setContent("");
           editor.focus();
         },
       });
@@ -162,4 +162,4 @@ export const initializeTinyMCE = (options: EditorInitParams) => {
   tinymce.init(settings);
 };
 
-document.addEventListener('DOMContentLoaded', addSvgDefToDocument, false);
+document.addEventListener("DOMContentLoaded", addSvgDefToDocument, false);

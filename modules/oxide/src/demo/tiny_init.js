@@ -46,7 +46,7 @@ var toolbarItems = [
   'underline',
   'strikethrough',
   '|',
-  'fontsizeselect',
+  'fontsize',
   'forecolor',
   '|',
   'blockquote',
@@ -63,7 +63,7 @@ var toolbarItems = [
   '|',
   'code',
 ].join(' ');
-var inlineFormattingItems = 'bold italic underline strikethrough | fontsizeselect forecolor | blockquote';
+var inlineFormattingItems = 'bold italic underline strikethrough | fontsize forecolor | blockquote';
 var blockFormattingItems = 'align bullist';
 function initializeTinyMCE (options) {
   var _a;
@@ -83,7 +83,7 @@ function initializeTinyMCE (options) {
       menubar: false,
       statusbar: false,
       color_map: color_map,
-      color_cols: 8,
+      color_cols: 9,
       custom_colors: false,
       mobile: {
           toolbar_mode: 'floating',
